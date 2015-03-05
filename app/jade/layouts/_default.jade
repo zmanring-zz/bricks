@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+  head
+    title bricks
+    meta(charset='UTF-8')
+    meta(content='', name='description')
+    meta(content='Zach Manring', name='author')
+    meta(content='3 days', name='revisit-after')
+
+    // build:css /styles/main.css
+    link(href='/styles/main.css', rel='stylesheet')
+    // endbuild
+
+  body(class=page)
+    header
+    
+    main
+      block content
+
+    footer
+      button.drop drop
+
+    // build:js /scripts/main.js    
+    script(src='/bower_components/jquery/dist/jquery.js')
+    script(src='/bower_components/greensock/src/minified/TweenMax.min.js')
+    script(src='/scripts/main.js')
+    // endbuild
