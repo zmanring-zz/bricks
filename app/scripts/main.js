@@ -86,7 +86,7 @@
     };
 
     Brick.prototype.gameOver = function() {
-      this.body.attr('data-points', 'GAME OVER');
+      this.body.attr('data-points', 'GAME OVER!');
       return this.dropButton.text(':(');
     };
 

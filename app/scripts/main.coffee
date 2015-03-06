@@ -79,7 +79,7 @@ class Brick
     $('head title').text('Bricks (' + @brickCount + ')')
 
   gameOver: ->
-    @body.attr 'data-points', 'GAME OVER'
+    @body.attr 'data-points', 'GAME OVER!'
     @dropButton.text ':('
 
   drop: ->
