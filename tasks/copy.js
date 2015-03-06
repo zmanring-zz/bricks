@@ -23,6 +23,13 @@ module.exports = {
       src: [
         'scripts/{,*/}*js', 'bower_components/**/*js'
       ]
+    }, {
+      expand: true,
+      cwd: '<%= folders.tmp %>',
+      dest: '<%= folders.dist %>',
+      src: [
+        '**/*.html'
+      ]
     }]
   }
 };
