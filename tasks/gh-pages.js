@@ -1,10 +1,10 @@
 module.exports = {
   target: {
     options: {
-      // The default commit message for the gh-pages branch
-      commitMessage: 'push'
+      base: 'dist',
+      message: 'grunt gh-pages build'
     },
     // The folder where your gh-pages repo is
-    src: 'dist'
+    src: ['**']
   }
 }
