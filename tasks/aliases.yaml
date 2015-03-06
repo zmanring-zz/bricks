@@ -23,3 +23,7 @@ build:
   - imagemin
   - svgmin
   - usemin
+
+deploy:
+  - build
+  - githubPages

@@ -11,7 +11,8 @@ module.exports = {
         '<%= folders.tmp %>',
         '<%= folders.dist %>/*',
         '!<%= folders.dist %>/.git*',
-        '.sass-cache'
+        '.sass-cache',
+        'dist'
       ]
     }]
   },
