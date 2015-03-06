@@ -6,6 +6,11 @@
 module.exports = {
   html: '<%= folders.tmp %>/index.html',
   options: {
-    dest: '<%= folders.dist %>'
+    dest: '<%= folders.dist %>',
+    flow: {
+      steps: {
+        js: 'coffee'
+      }
+    }
   }
 };

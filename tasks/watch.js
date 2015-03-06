@@ -22,5 +22,9 @@ module.exports = {
   sass: {
     files: '<%= folders.app %>/styles/**/*.sass',
     tasks: ['sass', 'autoprefixer']
+  },
+  coffee: {
+    files: '<%= folders.app %>/scripts/**/*.coffee',
+    tasks: ['coffee']
   }
 };

@@ -5,6 +5,7 @@ serve:
   - clean:server
   - jade
   - sass
+  - coffee
   - autoprefixer
   - connect:server
   - watch
