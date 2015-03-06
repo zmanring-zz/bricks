@@ -1,3 +1,54 @@
+class Score
+  constructor: ->
+    
+    @modalContent = $ '.modal .content'
+    @submitted = false
+
+    $('.add').on 'click', =>
+      @add $('.name').val(), brick.getScore() unless @submitted
+      $('.modal label').hide()
+      $('.add').hide()
+      @submitted = true
+
+  connect: ->
+    @firebase = new Firebase('https://bricks.firebaseio.com/')
+    do @getLeaders
+
+  getLeaders: ->
+    @firebase.child('leaderboards').on 'value', (snapshot) =>
+      @displayLeaderboard snapshot.val()
+
+  add: (name='anonymous', score) ->
+    epoch = (new Date).getTime()
+
+    @firebase.child('leaderboards').child(epoch).set(
+      name: name
+      score: score
+      time: epoch
+    )
+
+  toArray: (data) ->
+    arr = []
+
+    for key of data
+      obj = data[key]
+      arr.push obj
+
+     _.sortBy(arr, 'score').reverse()
+
+  displayLeaderboard: (data) ->
+
+    leadersArray = @toArray data
+    html = '<ul>'
+
+    for leader in leadersArray
+      html += '<li><p>' + leader.name + '<span>' + leader.score + '</span></p></li>'
+
+    html += '</ul>'
+
+    @modalContent.html html
+
+
 class Brick
   constructor: ->
     @body = $ 'body'
@@ -6,6 +57,7 @@ class Brick
     @delayInSeconds = .8
     @dropButton = $ 'button.drop'
     @main = $ 'main'
+    @modal = $ '.modal'
     @window = $ window
 
     # create brick
@@ -14,6 +66,9 @@ class Brick
     @dropButton.on 'click', =>
       @dropButton.attr 'disabled', 'disabled'
       do @drop
+
+    $('.reload').on 'click', ->
+      do location.reload
 
   create: (width='50%')->
     @main.prepend '<div class="brick current" style="width:' + width + '"></div>'
@@ -39,6 +94,9 @@ class Brick
         left: 0
         ease: Linear.easeNone
     )
+
+  getScore: ->
+    @brickCount
 
   percentFromLeft: ->
     fromLeftInPx = @currentBrickElem.offset().left
@@ -76,11 +134,15 @@ class Brick
   calculatePoints: ->
     @brickCount++
     @body.attr 'data-points', @brickCount
+    $('.score').attr 'data-points', @brickCount
     $('head title').text('Bricks (' + @brickCount + ')')
 
   gameOver: ->
     @body.attr 'data-points', 'GAME OVER!'
     @dropButton.text ':('
+
+    do score.connect
+    do @modal.show
 
   drop: ->
     # stop first
@@ -117,4 +179,5 @@ class Brick
     )
 
 # init
-new Brick()
+brick = new Brick()
+score = new Score()

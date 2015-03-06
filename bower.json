@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "dependencies": {
     "jquery": "~2.1.1",
-    "greensock": "~1.16.0"
+    "greensock": "~1.16.0",
+    "firebase": "~2.2.2",
+    "underscore": "~1.8.2"
   },
   "devDependencies": {}
 }

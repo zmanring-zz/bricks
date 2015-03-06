@@ -19,9 +19,21 @@ html(lang="en")
 
     footer
       button.drop drop
+    
+    .modal
+      h2.score(data-points='0') Your score 
+      label
+        | Name:
+        input.name(type='text')
+      button.add add
+      button.reload try again
+      h2 Leaderboard
+      .content
 
     // build:js scripts/main.js    
     script(src='/bower_components/jquery/dist/jquery.js')
     script(src='/bower_components/greensock/src/minified/TweenMax.min.js')
+    script(src='/bower_components/underscore/underscore-min.js')
+    script(src='/bower_components/firebase/firebase.js')
     script(src='/scripts/main.js')
     // endbuild

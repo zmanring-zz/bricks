@@ -1,6 +1,74 @@
 (function() {
-  var Brick,
+  var Brick, Score, brick, score,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  Score = (function() {
+    function Score() {
+      this.modalContent = $('.modal .content');
+      this.submitted = false;
+      $('.add').on('click', (function(_this) {
+        return function() {
+          if (!_this.submitted) {
+            _this.add($('.name').val(), brick.getScore());
+          }
+          $('.modal label').hide();
+          $('.add').hide();
+          return _this.submitted = true;
+        };
+      })(this));
+    }
+
+    Score.prototype.connect = function() {
+      this.firebase = new Firebase('https://bricks.firebaseio.com/');
+      return this.getLeaders();
+    };
+
+    Score.prototype.getLeaders = function() {
+      return this.firebase.child('leaderboards').on('value', (function(_this) {
+        return function(snapshot) {
+          return _this.displayLeaderboard(snapshot.val());
+        };
+      })(this));
+    };
+
+    Score.prototype.add = function(name, score) {
+      var epoch;
+      if (name == null) {
+        name = 'anonymous';
+      }
+      epoch = (new Date).getTime();
+      return this.firebase.child('leaderboards').child(epoch).set({
+        name: name,
+        score: score,
+        time: epoch
+      });
+    };
+
+    Score.prototype.toArray = function(data) {
+      var arr, key, obj;
+      arr = [];
+      for (key in data) {
+        obj = data[key];
+        arr.push(obj);
+      }
+      return _.sortBy(arr, 'score').reverse();
+    };
+
+    Score.prototype.displayLeaderboard = function(data) {
+      var html, i, leader, leadersArray, len;
+      leadersArray = this.toArray(data);
+      html = '<ul>';
+      for (i = 0, len = leadersArray.length; i < len; i++) {
+        leader = leadersArray[i];
+        html += '<li><p>' + leader.name + '<span>' + leader.score + '</span></p></li>';
+      }
+      html += '</ul>';
+      return this.modalContent.html(html);
+    };
+
+    return Score;
+
+  })();
 
   Brick = (function() {
     function Brick() {
@@ -11,6 +79,7 @@
       this.delayInSeconds = .8;
       this.dropButton = $('button.drop');
       this.main = $('main');
+      this.modal = $('.modal');
       this.window = $(window);
       this.create();
       this.dropButton.on('click', (function(_this) {
@@ -19,6 +88,9 @@
           return _this.drop();
         };
       })(this));
+      $('.reload').on('click', function() {
+        return location.reload();
+      });
     }
 
     Brick.prototype.create = function(width) {
@@ -44,6 +116,10 @@
         left: 0,
         ease: Linear.easeNone
       });
+    };
+
+    Brick.prototype.getScore = function() {
+      return this.brickCount;
     };
 
     Brick.prototype.percentFromLeft = function() {
@@ -82,12 +158,15 @@
     Brick.prototype.calculatePoints = function() {
       this.brickCount++;
       this.body.attr('data-points', this.brickCount);
+      $('.score').attr('data-points', this.brickCount);
       return $('head title').text('Bricks (' + this.brickCount + ')');
     };
 
     Brick.prototype.gameOver = function() {
       this.body.attr('data-points', 'GAME OVER!');
-      return this.dropButton.text(':(');
+      this.dropButton.text(':(');
+      score.connect();
+      return this.modal.show();
     };
 
     Brick.prototype.drop = function() {
@@ -125,6 +204,8 @@
 
   })();
 
-  new Brick();
+  brick = new Brick();
+
+  score = new Score();
 
 }).call(this);

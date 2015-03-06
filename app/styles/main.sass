@@ -10,6 +10,7 @@ html
     box-sizing: inherit
 
   body
+    color: #666
     display: flex
     flex-flow: column nowrap
     height: 100%
@@ -47,6 +48,7 @@ html
         left: 0
         position: absolute
         z-index: 20
+        border-radius: 3px
 
     footer
       display: flex
@@ -65,3 +67,51 @@ html
 
         &:active
           background: $color-drop
+
+    .modal
+      background-color: rgba(255,255,255,0.8)
+      bottom: 0
+      display: none
+      left: 0
+      overflow-y: scroll
+      padding: 50px
+      position: absolute
+      right: 0
+      top: 0
+      z-index: 100
+
+      h2.score:after
+        content: attr(data-points)
+
+      label
+        display: block
+        margin-bottom: 20px
+
+        input
+          width: 100%
+          border: 1px solid #cecece
+          padding: 10px
+
+      ul
+        margin: 0 auto
+        padding: 0
+
+        li
+          list-style: none
+
+          span
+            font-weight: 600
+            float: right
+
+      button
+        background: $color-drop
+        border: 0
+        color: #fff
+        outline: 0
+        padding: 20px
+        text-transform: uppercase
+        width: 100%
+        margin-bottom: 10px
+
+        &.reload
+          background: $color-brick
