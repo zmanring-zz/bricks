@@ -60,7 +60,8 @@ class Brick
     @body = $ 'body'
     @brickCount = 0
     @brickHeightInPercent = 3
-    @delayInSeconds = .8
+    @brickLimit = 10
+    @delayInSeconds = .7
     @dropButton = $ 'button.drop'
     @main = $ 'main'
     @modal = $ '.modal'
@@ -93,13 +94,25 @@ class Brick
       @currentBrickElem, @delayInSeconds,
         left: @currentWindowWidth - @currentBrickWidth
         ease: Linear.easeNone
-    )
-
-    @sideToSideTl.to(
+    ).to(
       @currentBrickElem, @delayInSeconds,
         left: 0
         ease: Linear.easeNone
     )
+
+  moveDown: ->
+    bricks = $ '.brick'
+    do bricks.last().remove
+    bricks = $ '.brick'
+
+    reverseList = bricks.get().reverse()
+
+    $(reverseList).each (i,brick)->
+
+      if i+1 < reverseList.length
+        $(brick).css(
+          bottom: (i*3) + '%'
+        )
 
   getScore: ->
     @brickCount
@@ -145,7 +158,6 @@ class Brick
 
   gameOver: ->
     @body.attr 'data-points', 'GAME OVER!'
-    @dropButton.text ':('
 
     do score.connect
     do @modal.show
@@ -178,9 +190,12 @@ class Brick
           else
             @create(@newWidth)
 
+          if @brickCount > @brickLimit
+            do @moveDown
+
     @dropTl.to(
       @currentBrickElem, 1,
-        bottom: @brickCount * @brickHeightInPercent + '%'
+        bottom: if @brickCount < @brickLimit then @brickCount * @brickHeightInPercent + '%' else @brickLimit * @brickHeightInPercent + '%'
         ease: Bounce.easeOut
     )
 

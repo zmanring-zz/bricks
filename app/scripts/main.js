@@ -58,11 +58,11 @@
     };
 
     Score.prototype.displayLeaderboard = function(data) {
-      var html, i, leader, leadersArray, len;
+      var html, j, leader, leadersArray, len;
       leadersArray = this.sortDataByScore(data);
       html = '<ul>';
-      for (i = 0, len = leadersArray.length; i < len; i++) {
-        leader = leadersArray[i];
+      for (j = 0, len = leadersArray.length; j < len; j++) {
+        leader = leadersArray[j];
         html += '<li><p>' + leader.name + '<span>' + leader.score + '</span></p></li>';
       }
       html += '</ul>';
@@ -79,7 +79,8 @@
       this.body = $('body');
       this.brickCount = 0;
       this.brickHeightInPercent = 3;
-      this.delayInSeconds = .8;
+      this.brickLimit = 10;
+      this.delayInSeconds = .7;
       this.dropButton = $('button.drop');
       this.main = $('main');
       this.modal = $('.modal');
@@ -111,13 +112,27 @@
       this.sideToSideTl = new TimelineLite({
         onComplete: this.startSideToSide
       });
-      this.sideToSideTl.to(this.currentBrickElem, this.delayInSeconds, {
+      return this.sideToSideTl.to(this.currentBrickElem, this.delayInSeconds, {
         left: this.currentWindowWidth - this.currentBrickWidth,
         ease: Linear.easeNone
-      });
-      return this.sideToSideTl.to(this.currentBrickElem, this.delayInSeconds, {
+      }).to(this.currentBrickElem, this.delayInSeconds, {
         left: 0,
         ease: Linear.easeNone
+      });
+    };
+
+    Brick.prototype.moveDown = function() {
+      var bricks, reverseList;
+      bricks = $('.brick');
+      bricks.last().remove();
+      bricks = $('.brick');
+      reverseList = bricks.get().reverse();
+      return $(reverseList).each(function(i, brick) {
+        if (i + 1 < reverseList.length) {
+          return $(brick).css({
+            bottom: (i * 3) + '%'
+          });
+        }
       });
     };
 
@@ -167,7 +182,6 @@
 
     Brick.prototype.gameOver = function() {
       this.body.attr('data-points', 'GAME OVER!');
-      this.dropButton.text(':(');
       score.connect();
       return this.modal.show();
     };
@@ -189,16 +203,19 @@
               _this.previousBrickWidth = _this.currentBrickWidth;
               _this.delayInSeconds = _this.delayInSeconds / 1.01;
               if (_this.brickCount <= 1) {
-                return _this.create();
+                _this.create();
               } else {
-                return _this.create(_this.newWidth);
+                _this.create(_this.newWidth);
+              }
+              if (_this.brickCount > _this.brickLimit) {
+                return _this.moveDown();
               }
             }
           };
         })(this)
       });
       return this.dropTl.to(this.currentBrickElem, 1, {
-        bottom: this.brickCount * this.brickHeightInPercent + '%',
+        bottom: this.brickCount < this.brickLimit ? this.brickCount * this.brickHeightInPercent + '%' : this.brickLimit * this.brickHeightInPercent + '%',
         ease: Bounce.easeOut
       });
     };
