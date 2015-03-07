@@ -4,15 +4,18 @@
 
   Score = (function() {
     function Score() {
+      this.form = $('.modal form');
       this.modalContent = $('.modal .content');
+      this.modalLabel = $('.modal label');
       this.submitted = false;
-      $('.add').on('click', (function(_this) {
-        return function() {
+      this.nameInput = $('.name');
+      this.form.on('submit', (function(_this) {
+        return function(event) {
+          event.preventDefault();
           if (!_this.submitted) {
-            _this.add($('.name').val(), brick.getScore());
+            _this.add(_this.nameInput.val(), brick.getScore());
           }
-          $('.modal label').hide();
-          $('.add').hide();
+          _this.form.hide();
           return _this.submitted = true;
         };
       })(this));
@@ -44,7 +47,7 @@
       });
     };
 
-    Score.prototype.toArray = function(data) {
+    Score.prototype.sortDataByScore = function(data) {
       var arr, key, obj;
       arr = [];
       for (key in data) {
@@ -56,7 +59,7 @@
 
     Score.prototype.displayLeaderboard = function(data) {
       var html, i, leader, leadersArray, len;
-      leadersArray = this.toArray(data);
+      leadersArray = this.sortDataByScore(data);
       html = '<ul>';
       for (i = 0, len = leadersArray.length; i < len; i++) {
         leader = leadersArray[i];

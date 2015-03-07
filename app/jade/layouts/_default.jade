@@ -22,11 +22,14 @@ html(lang="en")
     
     .modal
       h2.score(data-points='0') Your score 
-      label
-        | Name:
-        input.name(type='text')
-      button.add add
+      form
+        label
+          | Name:
+          input.name(type='text', maxlength='20', required)
+        button.add(type='submit') add
+        
       button.reload try again
+      
       h2 Leaderboard
       .content
 

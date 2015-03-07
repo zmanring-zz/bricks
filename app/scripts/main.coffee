@@ -1,13 +1,19 @@
 class Score
   constructor: ->
-    
+    @form = $ '.modal form'
     @modalContent = $ '.modal .content'
+    @modalLabel = $ '.modal label'
     @submitted = false
+    @nameInput = $ '.name'
 
-    $('.add').on 'click', =>
-      @add $('.name').val(), brick.getScore() unless @submitted
-      $('.modal label').hide()
-      $('.add').hide()
+    @form.on 'submit', (event) =>
+      do event.preventDefault
+
+      # add new score
+      @add @nameInput.val(), brick.getScore() unless @submitted
+
+      # remove and disable duplicate entries
+      do @form.hide
       @submitted = true
 
   connect: ->
@@ -27,7 +33,7 @@ class Score
       time: epoch
     )
 
-  toArray: (data) ->
+  sortDataByScore: (data) ->
     arr = []
 
     for key of data
@@ -38,7 +44,7 @@ class Score
 
   displayLeaderboard: (data) ->
 
-    leadersArray = @toArray data
+    leadersArray = @sortDataByScore data
     html = '<ul>'
 
     for leader in leadersArray
