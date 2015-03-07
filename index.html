@@ -17,10 +17,12 @@
     </footer>
     <div class="modal">
       <h2 data-points="0" class="score">Your score </h2>
-      <label>Name:
-        <input type="text" class="name">
-      </label>
-      <button class="add">add</button>
+      <form>
+        <label>Name:
+          <input type="text" maxlength="20" required class="name">
+        </label>
+        <button type="submit" class="add">add</button>
+      </form>
       <button class="reload">try again</button>
       <h2>Leaderboard</h2>
       <div class="content"></div>
