@@ -62,6 +62,7 @@ class Brick
     @brickHeightInPercent = 3
     @brickLimit = 10
     @delayInSeconds = .7
+    @document = $ document
     @dropButton = $ 'button.drop'
     @main = $ 'main'
     @modal = $ '.modal'
@@ -73,6 +74,12 @@ class Brick
     @dropButton.on 'click', =>
       @dropButton.attr 'disabled', 'disabled'
       do @drop
+
+    @document.keydown (event) =>
+      # spacebar
+      if event.keyCode is 32
+        @dropButton.attr 'disabled', 'disabled'
+        do @drop
 
     $('.reload').on 'click', ->
       do location.reload

@@ -81,6 +81,7 @@
       this.brickHeightInPercent = 3;
       this.brickLimit = 10;
       this.delayInSeconds = .7;
+      this.document = $(document);
       this.dropButton = $('button.drop');
       this.main = $('main');
       this.modal = $('.modal');
@@ -90,6 +91,14 @@
         return function() {
           _this.dropButton.attr('disabled', 'disabled');
           return _this.drop();
+        };
+      })(this));
+      this.document.keydown((function(_this) {
+        return function(event) {
+          if (event.keyCode === 32) {
+            _this.dropButton.attr('disabled', 'disabled');
+            return _this.drop();
+          }
         };
       })(this));
       $('.reload').on('click', function() {
