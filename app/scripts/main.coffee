@@ -64,6 +64,7 @@ class Brick
     @delayInSeconds = .7
     @document = $ document
     @dropButton = $ 'button.drop'
+    @html = $ 'html'
     @main = $ 'main'
     @modal = $ '.modal'
     @window = $ window
@@ -76,6 +77,11 @@ class Brick
       do @drop
 
     @document.keydown (event) =>
+
+      # g
+      if event.keyCode is 71
+        @html.toggleClass 'dark'
+
       # spacebar
       if event.keyCode is 32
         @dropButton.attr 'disabled', 'disabled'

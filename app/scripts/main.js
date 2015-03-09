@@ -83,6 +83,7 @@
       this.delayInSeconds = .7;
       this.document = $(document);
       this.dropButton = $('button.drop');
+      this.html = $('html');
       this.main = $('main');
       this.modal = $('.modal');
       this.window = $(window);
@@ -95,6 +96,9 @@
       })(this));
       this.document.keydown((function(_this) {
         return function(event) {
+          if (event.keyCode === 71) {
+            _this.html.toggleClass('dark');
+          }
           if (event.keyCode === 32) {
             _this.dropButton.attr('disabled', 'disabled');
             return _this.drop();
