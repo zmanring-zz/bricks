@@ -7,7 +7,7 @@ module.exports = {
   options: {
     port: 9000,
     // change this to '0.0.0.0' to access the server from outside
-    hostname: '0.0.0.0',
+    hostname: '127.0.0.1',
     livereload: true
   },
   server: {

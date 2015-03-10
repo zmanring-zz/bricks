@@ -1,0 +1,24 @@
+doctype html
+html(lang='en')
+  head
+    title Bricks
+    meta(charset='UTF-8')
+    meta(content='How many bricks can you stack?', name='description')
+    meta(content='3 days', name='revisit-after')
+    meta(content='Zach Manring', name='author')
+    meta(name='viewport' content='width=device-width, user-scalable=no')
+
+    // build:css styles/main.css
+    link(href='/styles/pixi.css', rel='stylesheet')
+    // endbuild
+
+  body(class=page)
+
+    // build:js scripts/main.js    
+    //- script(src='/bower_components/jquery/dist/jquery.js')
+    //- script(src='/bower_components/greensock/src/minified/TweenMax.min.js')
+    //- script(src='/bower_components/underscore/underscore-min.js')
+    //- script(src='/bower_components/firebase/firebase.js')
+    script(src='/bower_components/pixi/bin/pixi.dev.js')
+    script(src='/scripts/pixi.js')
+    // endbuild
